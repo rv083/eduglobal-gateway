@@ -1,10 +1,12 @@
 // src/pages/Home.jsx
-import React from 'react'
+import React, { useState } from 'react'
 
 /*
   EduGlobalGateway — Home Page (single-file component set)
-  - Tailwind CSS classes are used throughout
-  - “Happy Students” and “Years Experience” counters removed
+  - Logo & site name enlarged
+  - Navbar enlarged and updated with new headings
+  - "Study Abroad" has a dropdown (IELTS/PTE, SOP/LOR, Profiling)
+  - Mobile menu + dropdown toggle included
 */
 
 function Topbar(){
@@ -23,26 +25,102 @@ function Topbar(){
 }
 
 function Header(){
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [studyDropdownOpen, setStudyDropdownOpen] = useState(false) // mobile dropdown toggle
+
   return (
     <header className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-lg bg-yellow-300 flex items-center justify-center text-blue-800 font-bold">EGG</div>
+        {/* Larger logo */}
+        <div className="w-16 h-16 rounded-lg bg-yellow-300 flex items-center justify-center text-blue-800 font-extrabold text-xl shadow-sm">
+          EGG
+        </div>
+
+        {/* Larger site name */}
         <div>
-          <h1 className="text-lg font-bold">EduGlobalGateway</h1>
-          <p className="text-xs text-slate-500">Your pathway to study abroad</p>
+          <h1 className="text-2xl font-extrabold">EduGlobalGateway</h1>
+          <p className="text-sm text-slate-500">Your pathway to study abroad</p>
         </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm">
-        <a href="#" className="hover:text-blue-600">Home</a>
-        <a href="#services" className="hover:text-blue-600">Services</a>
-        <a href="#countries" className="hover:text-blue-600">Countries</a>
-        <a href="#about" className="hover:text-blue-600">About</a>
-        <a href="#testimonials" className="hover:text-blue-600">Testimonials</a>
+      {/* Desktop nav */}
+      <nav className="hidden md:flex items-center gap-6 text-base">
+        <div className="relative group">
+          <button
+            className="flex items-center gap-2 hover:text-blue-600 focus:outline-none"
+            aria-expanded="false"
+            aria-haspopup="menu"
+          >
+            Study Abroad
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          {/* Dropdown (shows on hover via group-hover) */}
+          <div className="absolute right-0 mt-3 w-48 bg-white border rounded-md shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition">
+            <a className="block px-4 py-2 text-sm hover:bg-blue-50" href="#">IELTS / PTE</a>
+            <a className="block px-4 py-2 text-sm hover:bg-blue-50" href="#">SOP / LOR</a>
+            <a className="block px-4 py-2 text-sm hover:bg-blue-50" href="#">Profiling</a>
+          </div>
+        </div>
+
+        <a href="#services" className="hover:text-blue-600">Career Counselling</a>
+        <a href="#corporate" className="hover:text-blue-600">Corporate Training</a>
+        <a href="#universities" className="hover:text-blue-600">Universities</a>
+        <a href="#advisory" className="hover:text-blue-600">Advisory Board</a>
+        <a href="#about" className="hover:text-blue-600">About Us</a>
+
         <a href="#contact" className="px-3 py-2 rounded-md bg-blue-600 text-white">Contact</a>
       </nav>
 
-      <button className="md:hidden border border-blue-600 text-blue-600 px-3 py-2 rounded-md">Menu</button>
+      {/* Mobile controls */}
+      <div className="md:hidden flex items-center gap-3">
+        <button
+          onClick={() => setMobileOpen(v => !v)}
+          aria-label="Toggle menu"
+          className="border border-blue-600 text-blue-600 px-3 py-2 rounded-md"
+        >
+          {mobileOpen ? 'Close' : 'Menu'}
+        </button>
+      </div>
+
+      {/* Mobile menu panel */}
+      {mobileOpen && (
+        <div className="absolute top-24 left-4 right-4 bg-white border rounded-md shadow-lg p-4 md:hidden z-50">
+          <ul className="flex flex-col gap-2 text-base">
+            <li>
+              <button
+                className="w-full text-left flex items-center justify-between px-2 py-2 rounded hover:bg-blue-50"
+                onClick={() => setStudyDropdownOpen(s => !s)}
+                aria-expanded={studyDropdownOpen}
+                aria-controls="mobile-study-menu"
+              >
+                Study Abroad
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d={studyDropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                </svg>
+              </button>
+
+              {studyDropdownOpen && (
+                <div id="mobile-study-menu" className="mt-2 ml-4 flex flex-col gap-1">
+                  <a className="px-2 py-2 rounded hover:bg-blue-50" href="#">IELTS / PTE</a>
+                  <a className="px-2 py-2 rounded hover:bg-blue-50" href="#">SOP / LOR</a>
+                  <a className="px-2 py-2 rounded hover:bg-blue-50" href="#">Profiling</a>
+                </div>
+              )}
+            </li>
+
+            <li><a className="block px-2 py-2 rounded hover:bg-blue-50" href="#services">Career Counselling</a></li>
+            <li><a className="block px-2 py-2 rounded hover:bg-blue-50" href="#corporate">Corporate Training</a></li>
+            <li><a className="block px-2 py-2 rounded hover:bg-blue-50" href="#universities">Universities</a></li>
+            <li><a className="block px-2 py-2 rounded hover:bg-blue-50" href="#advisory">Advisory Board</a></li>
+            <li><a className="block px-2 py-2 rounded hover:bg-blue-50" href="#about">About Us</a></li>
+
+            <li><a className="mt-2 inline-block px-4 py-2 rounded-md bg-blue-600 text-white text-center" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      )}
     </header>
   )
 }
@@ -94,7 +172,7 @@ function QuickEnquiryForm(){
   )
 }
 
-// ✅ Updated Counters (only "Universities" remains)
+// Counters (only "Universities")
 function Counters(){
   const items = [
     {num:'200+', label:'Universities'}
@@ -216,7 +294,7 @@ function Footer(){
 
 export default function Home(){
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 relative">
       <Topbar />
       <Header />
       <main>
